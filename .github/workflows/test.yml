@@ -47,28 +47,3 @@ jobs:
           echo "Escaped One-Line JSON: $one_line_json"
           echo "escaped_json=$one_line_json" >> $GITHUB_ENV	
       
-      -	name: get_tenant_id
-        id: get_tenant_id
-        uses: fjogeleit/http-request-action@v1
-        continue-on-error: true
-        with:
-          url: 'https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal'
-          method: 'POST'
-          customHeaders: '{"Content-Type": "application/json"}'
-          data: |
-            {
-              "app_id": ${{secrets.LARK_APP_ID}},
-              "app_secret": ${{secrets.LARK_APP_SECRET}}
-            }
-      - name: deployment_message
-        uses: fjogeleit/http-request-action@v1
-        continue-on-error: true
-        with:
-          url: 'https://open.larksuite.com/open-apis/im/v1/messages?receive_id_type=${{ fromJson(steps.get_tenant_id.outputs.response).tenant_access_token }}'
-          method: 'POST'
-          customHeaders: '{"Content-Type": "application/json"}'
-          data: |
-            {
-              "receive_id": "oc_112c4bd19a5fb0fd1ded2dc1945445e3",
-              "msg_type": "post",
-              "content": ${{ env.escaped_json }}}			
