@@ -45,10 +45,7 @@ jobs:
             }
           }'
           
-          # Remove newlines, replace spaces around key-value pairs and escape quotes
           one_line_json=$(echo "$json_string" | tr -d '\n' | sed 's/"/\\"/g')
-          
-          # Output the one-line escaped JSON to be used later
           echo "escaped_json=$one_line_json" >> $GITHUB_ENV
 
 			- id: get_tenant_id
