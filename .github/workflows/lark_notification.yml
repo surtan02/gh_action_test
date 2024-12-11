@@ -17,10 +17,10 @@ on:
         default: "2.0.0"
       AUTHOR:
         type: string
-        default: "github_user"
+        default: "github-user"
       TEAM:
         type: string
-        default: "github_team"
+        default: "github-team"
       NEED_APPROVAL:
         type: boolean
         default: false
@@ -29,7 +29,7 @@ on:
         default: "1.0.0"
       PROJECT_NAME:
         type: string
-        default: "project name"
+        default: "project-name"
       USER_TITLE:
         type: string
         default: "Release Author"
