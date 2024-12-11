@@ -1,0 +1,14 @@
+name = Test
+
+on = [push]
+
+jobs:
+	notify:
+		runs-on: ubuntu-latest
+	
+		steps:
+			- name: escape_json
+			  run: 
+				json_string='{"key":{"hello":{"test":null}}}'
+         			escaped_string=$(echo "$json_string" | sed 's/"/\\"/g')
+         			echo "Escaped String: $escaped_string"
