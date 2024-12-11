@@ -1,14 +1,14 @@
-name = Test
+name: Escape Quotes in Shell
 
-on = [push]
+on: [push]
 
 jobs:
-	notify:
-		runs-on: ubuntu-latest
-	
-		steps:
-			- name: escape_json
-			  run: 
-				json_string='{"key":{"hello":{"test":null}}}'
-         			escaped_string=$(echo "$json_string" | sed 's/"/\\"/g')
-         			echo "Escaped String: $escaped_string"
+  escape-quotes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Escape double quotes using shell
+        run: |
+          json_string='{"key":{"hello":{"test":null}}}'
+          escaped_string=$(echo "$json_string" | sed 's/"/\\"/g')
+          echo "Escaped String: $escaped_string"
