@@ -1,15 +1,13 @@
-name: Escape Quotes and Send HTTP Request
+name: Escape Quotes in Shell
 
 on: [push]
 
 jobs:
-  escape-quotes-and-deploy:
+  escape-quotes:
     runs-on: ubuntu-latest
 
     steps:
-      # Step to define the JSON and escape double quotes
       - name: Escape double quotes and format as one line
-        id: escape_quotes
         run: |
           json_string='{
             "en_us": {
@@ -46,6 +44,8 @@ jobs:
           }'
           
           one_line_json=$(echo "$json_string" | tr -d '\n' | sed 's/"/\\"/g')
+          echo "Escaped One-Line JSON: $one_line_json"
+
           echo "escaped_json=$one_line_json" >> $GITHUB_ENV
 
 			- id: get_tenant_id
