@@ -57,8 +57,8 @@ jobs:
           customHeaders: '{"Content-Type": "application/json"}'
           data: |
             {
-              "app_id": ${{secrets.LARK_APP_ID}},
-              "app_secret": ${{secrets.LARK_APP_SECRET}}
+              "app_id": ${{ secrets.LARK_APP_ID }},
+              "app_secret": ${{ secrets.LARK_APP_SECRET }}
             }
       - name: deployment_message
         uses: fjogeleit/http-request-action@v1
