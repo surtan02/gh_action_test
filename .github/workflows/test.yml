@@ -58,8 +58,8 @@ jobs:
           customHeaders: '{"Content-Type": "application/json"}'
           data: |
             {
-              "app_id": ${{ secrets.LARK_APP_ID }},
-              "app_secret": ${{ secrets.LARK_APP_SECRET }}
+              "app_id": "cli_a7bee715af38102f",
+              "app_secret": "2KvmzbH0xMU41McQqOlD8dryXwA7zA7M"
             }
       - name: deployment_message
         uses: fjogeleit/http-request-action@v1
@@ -67,7 +67,7 @@ jobs:
         with:
           url: 'https://open.larksuite.com/open-apis/im/v1/messages?receive_id_type=chat_id'
           method: 'POST'
-          bearerToken: 't-g206cb1v7S6G5ZBMEWM665IXSQKDDUQ4EQHVYLNB'
+          bearerToken: ${{ fromJson(steps.get_tenant_id.outputs.response).tenant_access_token }}
           customHeaders: '{"Content-Type": "application/json"}'
           data: |
             {
