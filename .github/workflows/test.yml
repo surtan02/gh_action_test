@@ -46,6 +46,7 @@ jobs:
           one_line_json=$(echo "$json_string" | tr -d '\n' | sed 's/"/\\"/g')
           echo "Escaped One-Line JSON: $one_line_json"
           echo "escaped_json=$one_line_json" >> $GITHUB_ENV	
+          echo ${{ secrets.LARK_APP_ID }}
       
       - name: get_tenant_ids
         id: get_tenant_id
