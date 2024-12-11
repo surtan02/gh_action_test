@@ -48,7 +48,8 @@ jobs:
 
           # echo "escaped_json=$one_line_json" >> $GITHUB_ENV
 
-			- id: get_tenant_id
+			- name: Get Tenant ID
+				id: get_tenant_id
         uses: fjogeleit/http-request-action@v1
         continue-on-error: true
         with:
@@ -61,4 +62,5 @@ jobs:
               "app_secret": ${{secrets.LARK_APP_SECRET}}
             }
 
+					
 					
