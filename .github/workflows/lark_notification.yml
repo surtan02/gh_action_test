@@ -22,8 +22,8 @@ on:
         type: string
         default: "github-team"
       NEED_APPROVAL:
-        type: boolean
-        default: false
+        type: string
+        default: "false"
       JIRA_VERSION_ID:
         type: string
         default: "1.0.0"
@@ -44,6 +44,7 @@ jobs:
 
     steps:
       - name: Deployment Message Preparation
+        if: ${{ inputs.NEED_APPROVAL == 'false' }}
         id: deployment_message_parser
         run: |
           json_string='{
@@ -107,6 +108,7 @@ jobs:
             }
   
       - name: deployment_message
+        if: ${{ inputs.NEED_APPROVAL == 'false' }}
         uses: fjogeleit/http-request-action@v1
         continue-on-error: true
         with:
@@ -122,7 +124,7 @@ jobs:
             }	
 
       - name: Approval Message Preparation
-        if: ${{ inputs.NEED_APPROVAL == true }}
+        if: ${{ inputs.NEED_APPROVAL == 'true' }}
         id: approval_message_parser
         run: |
           json_string='{
@@ -156,7 +158,7 @@ jobs:
           echo "escaped_json=$one_line_json" >> $GITHUB_OUTPUT	
 
       - name: Approval Notification
-        if: ${{ inputs.NEED_APPROVAL == true }}
+        if: ${{ inputs.NEED_APPROVAL == 'true' }}
         uses: fjogeleit/http-request-action@v1
         continue-on-error: true
         with:

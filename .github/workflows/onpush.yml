@@ -7,5 +7,5 @@ jobs:
   lark_notify:
     uses: surtan02/gh_action_test/.github/workflows/lark_notification.yml@main
     with:
-        NEED_APPROVAL: true
+        NEED_APPROVAL: "true"
     secrets: inherit
