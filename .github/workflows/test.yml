@@ -12,20 +12,20 @@ jobs:
         run: |
           json_string='{
             "en_us": {
-              "title": "${{ inputs.SLACK_TITLE }} ${{ github.repository }}",
+              "title": "${{ inputs.LARK_TITLE }} ${{ github.repository }}",
               "content": [
                 [
                   {
                     "tag": "md",
-                    "text": "**New Version: **${{ inputs.NEW_VERSION }}"
+                    "text": "**New Version:** ${{ inputs.NEW_VERSION }}"
                   },
                   {
                     "tag": "md",
-                    "text": "**Previous Version: **${{ inputs.PREVIOUS_VERSION }}"
+                    "text": "**Previous Version:** ${{ inputs.PREVIOUS_VERSION }}"
                   },
                   {
                     "tag": "md",
-                    "text": "**${{ inputs.USER_TITLE }}: **<${{ github.server_url }}/${{ inputs.AUTHOR }}|${{ inputs.AUTHOR }}>"
+                    "text": "**${{ inputs.USER_TITLE }}:** [${{ inputs.AUTHOR }}](${{ github.server_url }}/${{ inputs.AUTHOR }})"
                   },
                   {
                     "tag": "md",
@@ -37,7 +37,7 @@ jobs:
                   },
                   {
                     "tag": "md",
-                    "text": "**Status:** <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ job.status == 'success' && 'Success' || 'Failed' }}>"
+                    "text": "**Status:** ${{ job.status == 'success' && 'Success' || 'Failed' }}"
                   }
                 ]
               ]
@@ -74,7 +74,7 @@ jobs:
             {
               "receive_id": "oc_112c4bd19a5fb0fd1ded2dc1945445e3",
               "msg_type": "post",
-              "content": "${{ steps.parse_content.outputs.escaped_json }}"
+              "content": "${{ steps.parse_content..escaped_json }}"
             }			
 
             
