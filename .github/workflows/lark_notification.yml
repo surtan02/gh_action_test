@@ -5,6 +5,7 @@ on:
     inputs:
       CHANNEL_ID:
         type: string
+        default: "oc_112c4bd19a5fb0fd1ded2dc1945445e3"
       NEW_VERSION:
         type: string
         default: "2.0.0"
@@ -76,10 +77,6 @@ jobs:
                   },
                   {
                     "tag": "md",
-                    "text": "<font color='green'>Success</font> :CheckMark: ✅"
-                  },
-                  {
-                    "tag": "md",
                     "text": "\\n ---\\n"
                   }
                 ]
@@ -115,7 +112,7 @@ jobs:
           customHeaders: '{"Content-Type": "application/json"}'
           data: |
             {
-              "receive_id": "oc_112c4bd19a5fb0fd1ded2dc1945445e3",
+              "receive_id": ${{ inputs.CHANNEL_ID }},
               "msg_type": "post",
               "content": "${{ steps.parse_content.outputs.escaped_json }}"
             }			
