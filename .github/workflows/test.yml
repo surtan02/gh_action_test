@@ -47,7 +47,7 @@ jobs:
           echo "Escaped One-Line JSON: $one_line_json"
           echo "escaped_json=$one_line_json" >> $GITHUB_ENV	
       
-      - name: get_tenant_id
+      - name: get_tenant_ids
         id: get_tenant_id
         uses: fjogeleit/http-request-action@v1
         continue-on-error: true
