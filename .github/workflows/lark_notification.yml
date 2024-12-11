@@ -46,36 +46,45 @@ jobs:
         id: parse_content
         run: |
           json_string='{
-            "header": {
-              "text_tag_list": [
-                {
-                  "tag": "text_tag",
-                  "text": {
-                    "tag": "plain_text",
-                    "content": "title tag"
+            "en_us": {
+              "title": "${{ inputs.LARK_TITLE }} ${{ github.repository }}",
+              "content": [
+                [
+                  {
+                    "tag": "md",
+                    "text": "**New Version:** ${{ inputs.NEW_VERSION }}"
                   },
-                  "color": "carmine"
-                }
-              ],
-              "title": {
-                "tag": "plain_text",
-                "content": "main title"
-              },
-              "subtitle": {
-                "tag": "plain_text",
-                "content": "subtitle"
-              },
-              "template": "red"
-            },
-            "elements": [
-              {
-                "tag": "div",
-                "text": {
-                  "content": "Text content",
-                  "tag": "plain_text"
-                }
-              }
-            ]
+                  {
+                    "tag": "md",
+                    "text": "**Previous Version:** ${{ inputs.PREVIOUS_VERSION }}"
+                  },
+                  {
+                    "tag": "md",
+                    "text": "**${{ inputs.USER_TITLE }}:** [${{ inputs.AUTHOR }}](${{ github.server_url }}/${{ inputs.AUTHOR }})"
+                  },
+                  {
+                    "tag": "md",
+                    "text": "**Github Release:** ${{ github.server_url }}/${{ github.repository }}/releases/tag/v${{ inputs.VERSION_NAME }}"
+                  },
+                  {
+                    "tag": "md",
+                    "text": "**Jira Release**: https://29022131.atlassian.net/projects/${{ inputs.PROJECT_NAME }}/versions/${{ inputs.JIRA_VERSION_ID }}"
+                  },
+                  {
+                    "tag": "md",
+                    "text": "**Status:** ${{ job.status == 'success' && 'Success ✅' || 'Failed &#x274C;' }}"
+                  },
+                  {
+                    "tag": "md",
+                    "text": "<font color='green'>Success</font> :CheckMark: ✅"
+                  },
+                  {
+                    "tag": "md",
+                    "text": "\\n ---\\n"
+                  }
+                ]
+              ]
+            }
           }'
           
           one_line_json=$(echo "$json_string" | tr -d '\n' | sed 's/"/\\"/g')
