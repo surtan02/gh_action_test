@@ -1,4 +1,4 @@
-name: Escape Quotes in Shell
+name: Lark Notification
 
 on:
   workflow_call:
