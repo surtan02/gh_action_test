@@ -98,8 +98,8 @@ jobs:
           customHeaders: '{"Content-Type": "application/json"}'
           data: |
             {
-              "app_id": "${{ env.ENV_VAR_LARK_APP_ID }}",
-              "app_secret": "${{ env.ENV_VAR_LARK_APP_SECRET }}"
+              "app_id": "${{ secrets.LARK_APP_ID }}",
+              "app_secret": "${{ secrets.LARK_APP_SECRET }}"
             }
   
       - name: deployment_message
