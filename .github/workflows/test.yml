@@ -1,13 +1,15 @@
-name: Escape Quotes in Shell
+name: Escape Quotes and Send HTTP Request
 
 on: [push]
 
 jobs:
-  escape-quotes:
+  escape-quotes-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # Step to define the JSON and escape double quotes
       - name: Escape double quotes and format as one line
+        id: escape_quotes
         run: |
           json_string='{
             "en_us": {
@@ -45,4 +47,22 @@ jobs:
           
           # Remove newlines, replace spaces around key-value pairs and escape quotes
           one_line_json=$(echo "$json_string" | tr -d '\n' | sed 's/"/\\"/g')
-          echo "Escaped One-Line JSON: $one_line_json"
+          
+          # Output the one-line escaped JSON to be used later
+          echo "escaped_json=$one_line_json" >> $GITHUB_ENV
+
+      # Step to send the HTTP request using the escaped one-line JSON string
+      - name: deployment_message
+        uses: fjogeleit/http-request-action@v1
+        continue-on-error: true
+        with:
+          url: 'https://open.larksuite.com/open-apis/im/v1/messages?receive_id_type=${{ fromJson(steps.get_tenant_id.outputs.response).tenant_access_token }}'
+          method: 'POST'
+          customHeaders: '{"Content-Type": "application/json"}'
+          data: |
+            {
+              "receive_id": "oc_112c4bd19a5fb0fd1ded2dc1945445e3",
+              "msg_type": "post",
+              "content": ${{ env.escaped_json }}}	
+					
+					
