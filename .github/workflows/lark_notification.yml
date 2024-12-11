@@ -76,6 +76,10 @@ jobs:
                   },
                   {
                     "tag": "md",
+                    "text": "<font color='green'>Success</font> :CheckMark: "
+                  },
+                  {
+                    "tag": "md",
                     "text": "\\n ---\\n"
                   }
                 ]
