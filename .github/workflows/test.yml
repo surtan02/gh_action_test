@@ -51,6 +51,19 @@ jobs:
           # Output the one-line escaped JSON to be used later
           echo "escaped_json=$one_line_json" >> $GITHUB_ENV
 
+			- id: get_tenant_id
+        uses: fjogeleit/http-request-action@v1
+        continue-on-error: true
+        with:
+          url: 'https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal'
+          method: 'POST'
+          customHeaders: '{"Content-Type": "application/json"}'
+          data: |
+            {
+              "app_id": ${{secrets.LARK_APP_ID}},
+              "app_secret": ${{secrets.LARK_APP_SECRET}}
+            }
+
       # Step to send the HTTP request using the escaped one-line JSON string
       - name: deployment_message
         uses: fjogeleit/http-request-action@v1
