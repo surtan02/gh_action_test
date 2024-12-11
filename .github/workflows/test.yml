@@ -58,8 +58,8 @@ jobs:
           customHeaders: '{"Content-Type": "application/json"}'
           data: |
             {
-              "app_id": "cli_a7bee715af38102f",
-              "app_secret": "2KvmzbH0xMU41McQqOlD8dryXwA7zA7M"
+              "app_id": "${{ secrets.LARK_APP_ID }}",
+              "app_secret": "${{ secrets.LARK_APP_SECRETS }}"
             }
       - name: output
         run: |
