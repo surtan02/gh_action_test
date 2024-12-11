@@ -5,26 +5,20 @@ on:
     inputs:
       CHANNEL_ID:
         type: string
-        required: true
       NEW_VERSION:
         type: string
-        required: true
         default: "2.0.0"
       PREVIOUS_VERSION:
         type: string
-        required: true
         default: "1.0.0"
       VERSION_NAME:
         type: string
-        required: true
         default: "2.0.0"
       AUTHOR:
         type: string
-        required: true
         default: "github_user"
       TEAM:
         type: string
-        required: true
         default: "github_team"
       NEED_APPROVAL:
         type: boolean
