@@ -5,5 +5,5 @@ on: [push]
 
 jobs:
   lark_notify:
-    uses: surtan02/gh_action_test/.github/workflows/lark_notification.yml@master
+    uses: surtan02/gh_action_test/.github/workflows/lark_notification.yml@main
     secrets: inherit
