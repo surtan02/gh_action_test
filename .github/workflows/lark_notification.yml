@@ -118,7 +118,7 @@ jobs:
             }	
 
       - name: Approval Message Preparation
-        if: ${{ inputs.NEED_APPROVAL == 'true' }}
+        if: ${{ inputs.NEED_APPROVAL == true }}
         id: approval_message_parser
         run: |
           json_string='{
@@ -160,7 +160,7 @@ jobs:
           echo "escaped_json=$one_line_json" >> $GITHUB_OUTPUT	
 
       - name: Approval Notification
-        if: ${{ inputs.NEED_APPROVAL == 'true' }}
+        if: ${{ inputs.NEED_APPROVAL == true }}
         uses: fjogeleit/http-request-action@v1
         continue-on-error: true
         with:
