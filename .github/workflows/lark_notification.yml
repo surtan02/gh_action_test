@@ -77,6 +77,10 @@ jobs:
                   },
                   {
                     "tag": "md",
+                    "text": "**Github Action**: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                  },
+                  {
+                    "tag": "md",
                     "text": "**Status:** ${{ job.status == 'success' && 'Success ✅' || 'Failed ❌' }}"
                   }
                 ]
