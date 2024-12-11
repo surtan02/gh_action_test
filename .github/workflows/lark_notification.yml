@@ -5,7 +5,7 @@ on:
     inputs:
       CHANNEL_ID:
         type: string
-        default: "oc_112c4bd19a5fb0fd1ded2dc1945445e3"
+        default: oc_112c4bd19a5fb0fd1ded2dc1945445e3
       NEW_VERSION:
         type: string
         default: "2.0.0"
@@ -73,8 +73,7 @@ jobs:
                   },
                   {
                     "tag": "md",
-                    "text": "**Status:** ${{ job.status == 'success' && 'Success ✅' || 'Failed &#x274C;' }}",
-                    "color": "red"
+                    "text": "**Status:** ${{ job.status == 'success' && 'Success ✅' || 'Failed &#x274C;' }}"
                   },
                   {
                     "tag": "md",
