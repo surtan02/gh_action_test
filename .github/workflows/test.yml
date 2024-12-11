@@ -11,11 +11,38 @@ jobs:
       - name: Escape double quotes using shell
         run: |
           json_string='{
-            "key": {
-              "hello": {
-                "text": "test"
-              }
-            }
-          }'
-          escaped_string=$(echo "$json_string" | sed 's/"/\\"/g')
+                "en_us": {
+                  "title": "*${{ inputs.SLACK_TITLE }} ${{ github.repository }}*",
+                  "content":
+                  [
+                    [
+                      {
+                        "tag": "md",
+                        "text": "**New Version: **${{ inputs.NEW_VERSION }}"
+                      },
+                      {
+                        "tag": "md",
+                        "text": "**Previous Version: **${{ inputs.PREVIOUS_VERSION }}"
+                      },
+                      {
+                        "tag": "md",
+                        "text": "**${{ inputs.USER_TITLE }}: **<${{ github.server_url }}/${{ inputs.AUTHOR }}|${{ inputs.AUTHOR }}>"
+                      },
+                      {
+                        "tag": "md",
+                        "text": "**Github Release:** ${{ github.server_url }}/${{ github.repository }}/releases/tag/v${{ inputs.VERSION_NAME }}"
+                      },
+                      {
+                        "tag": "md",
+                        "text": "**Jira Release**: https://29022131.atlassian.net/projects/${{ inputs.PROJECT_NAME }}/versions/${{ inputs.JIRA_VERSION_ID }}"
+                      },
+                      {
+                        "tag": "md",
+                        "text": "**Status:** <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ job.status == 'success' && 'Success' || 'Failed' }}>"
+                      }
+                    ]
+                  ]
+                }        
+              }'
+          escaped_string=$(echo "$json_string" | sed 's/"/"/g')
           echo "Escaped String: $escaped_string"
