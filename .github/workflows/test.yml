@@ -67,7 +67,7 @@ jobs:
         with:
           url: 'https://open.larksuite.com/open-apis/im/v1/messages?receive_id_type=chat_id'
           method: 'POST'
-          Authorization: 't-g206cb1v7S6G5ZBMEWM665IXSQKDDUQ4EQHVYLNB'
+          bearerToken: 't-g206cb1v7S6G5ZBMEWM665IXSQKDDUQ4EQHVYLNB'
           customHeaders: '{"Content-Type": "application/json"}'
           data: |
             {
