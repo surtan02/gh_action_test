@@ -59,7 +59,7 @@ jobs:
           data: |
             {
               "app_id": "${{ secrets.LARK_APP_ID }}",
-              "app_secret": "${{ secrets.LARK_APP_SECRETS }}"
+              "app_secret": "${{ secrets.LARK_APP_SECRET }}"
             }
       - name: output
         run: |
