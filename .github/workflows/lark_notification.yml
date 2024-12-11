@@ -141,14 +141,6 @@ jobs:
                   {
                     "tag": "md",
                     "text": "**Github Action**: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-                  },
-                  {
-                    "tag": "md",
-                    "text": "**Jira Release**: https://29022131.atlassian.net/projects/${{ inputs.PROJECT_NAME }}/versions/${{ inputs.JIRA_VERSION_ID }}"
-                  },
-                  {
-                    "tag": "md",
-                    "text": "**Status:** ${{ job.status == 'success' && 'Success ✅' || 'Failed ❌' }}"
                   }
                 ]
               ]
