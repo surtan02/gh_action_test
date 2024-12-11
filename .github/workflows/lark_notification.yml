@@ -43,8 +43,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Escape double quotes and format as one line
-        id: parse_content
+      - name: Deployment Message Preparation
+        id: deployment_message_parser
         run: |
           json_string='{
             "en_us": {
@@ -87,8 +87,7 @@ jobs:
           one_line_json=$(echo "$json_string" | tr -d '\n' | sed 's/"/\\"/g')
           echo "Escaped One-Line JSON: $one_line_json"
           echo "escaped_json=$one_line_json" >> $GITHUB_OUTPUT	
-          echo ${{ secrets.LARK_APP_ID }}
-      
+
       - name: get_tenant_ids
         id: get_tenant_id
         uses: fjogeleit/http-request-action@v1
@@ -99,9 +98,10 @@ jobs:
           customHeaders: '{"Content-Type": "application/json"}'
           data: |
             {
-              "app_id": "${{ secrets.LARK_APP_ID }}",
-              "app_secret": "${{ secrets.LARK_APP_SECRET }}"
+              "app_id": "${{ env.ENV_VAR_LARK_APP_ID }}",
+              "app_secret": "${{ env.ENV_VAR_LARK_APP_SECRET }}"
             }
+  
       - name: deployment_message
         uses: fjogeleit/http-request-action@v1
         continue-on-error: true
@@ -114,7 +114,63 @@ jobs:
             {
               "receive_id": "${{ inputs.CHANNEL_ID }}",
               "msg_type": "post",
-              "content": "${{ steps.parse_content.outputs.escaped_json }}"
-            }			
+              "content": "${{ steps.deployment_message_parser.outputs.escaped_json }}"
+            }	
 
-            
+      - name: Approval Message Preparation
+        if: ${{ inputs.NEED_APPROVAL == 'true' }}
+        id: approval_message_parser
+        run: |
+          json_string='{
+            "en_us": {
+              "title": "${{ inputs.LARK_TITLE }} ${{ github.repository }}",
+              "content": [
+                [
+                  {
+                    "tag": "md",
+                    "text": "\\n ---\\n"
+                  },
+                  {
+                    "tag": "md",
+                    "text": "**Need Approval From:** @${{ inputs.REAM }}"
+                  },
+                  {
+                    "tag": "md",
+                    "text": "**Github Release:** ${{ github.server_url }}/${{ github.repository }}/releases/tag/v${{ inputs.VERSION_NAME }}"
+                  },
+                  {
+                    "tag": "md",
+                    "text": "**Github Action**: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                  },
+                  {
+                    "tag": "md",
+                    "text": "**Jira Release**: https://29022131.atlassian.net/projects/${{ inputs.PROJECT_NAME }}/versions/${{ inputs.JIRA_VERSION_ID }}"
+                  },
+                  {
+                    "tag": "md",
+                    "text": "**Status:** ${{ job.status == 'success' && 'Success ✅' || 'Failed ❌' }}"
+                  }
+                ]
+              ]
+            }
+          }'
+          
+          one_line_json=$(echo "$json_string" | tr -d '\n' | sed 's/"/\\"/g')
+          echo "Escaped One-Line JSON: $one_line_json"
+          echo "escaped_json=$one_line_json" >> $GITHUB_OUTPUT	
+
+      - name: Approval Notification
+        if: ${{ inputs.NEED_APPROVAL == 'true' }}
+        uses: fjogeleit/http-request-action@v1
+        continue-on-error: true
+        with:
+          url: 'https://open.larksuite.com/open-apis/im/v1/messages?receive_id_type=chat_id'
+          method: 'POST'
+          bearerToken: ${{ fromJson(steps.get_tenant_id.outputs.response).tenant_access_token }}
+          customHeaders: '{"Content-Type": "application/json"}'
+          data: |
+            {
+              "receive_id": "${{ inputs.CHANNEL_ID }}",
+              "msg_type": "post",
+              "content": "${{ steps.approval_message_parser.outputs.escaped_json }}"
+            }	
