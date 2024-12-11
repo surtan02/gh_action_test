@@ -1,6 +1,47 @@
 name: Escape Quotes in Shell
 
-on: [push]
+on:
+  workflow_call:
+    inputs:
+      CHANNEL_ID:
+        type: string
+        required: true
+      NEW_VERSION:
+        type: string
+        required: true
+        default: "2.0.0"
+      PREVIOUS_VERSION:
+        type: string
+        required: true
+        default: "1.0.0"
+      VERSION_NAME:
+        type: string
+        required: true
+        default: "2.0.0"
+      AUTHOR:
+        type: string
+        required: true
+        default: "github_user"
+      TEAM:
+        type: string
+        required: true
+        default: "github_team"
+      NEED_APPROVAL:
+        type: boolean
+        default: false
+      JIRA_VERSION_ID:
+        type: string
+        default: "1.0.0"
+      PROJECT_NAME:
+        type: string
+        default: "project name"
+      USER_TITLE:
+        type: string
+        default: "Release Author"
+      LARK_TITLE:
+        type: string
+        default: "Deployment"
+
 
 jobs:
   escape-quotes:
