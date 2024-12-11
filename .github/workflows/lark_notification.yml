@@ -112,7 +112,7 @@ jobs:
           customHeaders: '{"Content-Type": "application/json"}'
           data: |
             {
-              "receive_id": ${{ inputs.CHANNEL_ID }},
+              "receive_id": "${{ inputs.CHANNEL_ID }}",
               "msg_type": "post",
               "content": "${{ steps.parse_content.outputs.escaped_json }}"
             }			
