@@ -48,9 +48,13 @@ jobs:
         run: |
           json_string='{
             "en_us": {
-              "title": "${{ inputs.LARK_TITLE }} ${{ github.repository }}",
+              "title": "<h1>${{ inputs.LARK_TITLE }} ${{ github.repository }}</h1>",
               "content": [
                 [
+                  {
+                    "tag": "md",
+                    "text": "\\n ---\\n"
+                  },
                   {
                     "tag": "md",
                     "text": "**New Version:** ${{ inputs.NEW_VERSION }}"
@@ -74,10 +78,6 @@ jobs:
                   {
                     "tag": "md",
                     "text": "**Status:** ${{ job.status == 'success' && 'Success ✅' || 'Failed &#x274C;' }}"
-                  },
-                  {
-                    "tag": "md",
-                    "text": "\\n ---\\n"
                   }
                 ]
               ]
