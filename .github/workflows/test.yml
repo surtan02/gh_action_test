@@ -1,3 +1,4 @@
+
 name: Escape Quotes in Shell
 
 on: [push]
@@ -8,13 +9,13 @@ jobs:
 
     steps:
       - name: Escape double quotes using shell
-        run: 
+        run: |
           json_string='{
-						"key":{
-							"hello":{
-								"text":"test"
-							\}
-						\}
-					\}'
+            "key": {
+              "hello": {
+                "text": "test"
+              }
+            }
+          }'
           escaped_string=$(echo "$json_string" | sed 's/"/\\"/g')
           echo "Escaped String: $escaped_string"
