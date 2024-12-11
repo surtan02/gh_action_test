@@ -8,6 +8,7 @@ jobs:
 
     steps:
       - name: Escape double quotes and format as one line
+        id: parse_content
         run: |
           json_string='{
             "en_us": {
@@ -45,7 +46,7 @@ jobs:
           
           one_line_json=$(echo "$json_string" | tr -d '\n' | sed 's/"/\\"/g')
           echo "Escaped One-Line JSON: $one_line_json"
-          echo "escaped_json=$one_line_json" >> $GITHUB_ENV	
+          echo "escaped_json=$one_line_json" >> $GITHUB_OUTPUT	
           echo ${{ secrets.LARK_APP_ID }}
       
       - name: get_tenant_ids
@@ -61,9 +62,6 @@ jobs:
               "app_id": "${{ secrets.LARK_APP_ID }}",
               "app_secret": "${{ secrets.LARK_APP_SECRET }}"
             }
-      - name: output
-        run: |
-          echo ${{ fromJson(steps.get_tenant_id.outputs.response).tenant_access_token }}
       - name: deployment_message
         uses: fjogeleit/http-request-action@v1
         continue-on-error: true
@@ -76,7 +74,7 @@ jobs:
             {
               "receive_id": "oc_112c4bd19a5fb0fd1ded2dc1945445e3",
               "msg_type": "post",
-              "content": "${{ env.escaped_json }}"
+              "content": "${{ steps.parse_content.outputs.escaped_json }}"
             }			
 
             
