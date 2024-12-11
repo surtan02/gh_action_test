@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Escape double quotes using shell
+      - name: Escape double quotes and format as one line
         run: |
           json_string='{
             "en_us": {
@@ -42,6 +42,7 @@ jobs:
               ]
             }
           }'
-          # Escape double quotes in the JSON string
-          escaped_string=$(echo "$json_string" | sed 's/"/\\"/g')
-          echo "Escaped String: $escaped_string"
+          
+          # Remove newlines, replace spaces around key-value pairs and escape quotes
+          one_line_json=$(echo "$json_string" | tr -d '\n' | sed 's/"/\\"/g')
+          echo "Escaped One-Line JSON: $one_line_json"
