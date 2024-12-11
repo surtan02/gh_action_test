@@ -73,6 +73,7 @@ jobs:
             {
               "receive_id": "oc_112c4bd19a5fb0fd1ded2dc1945445e3",
               "msg_type": "post",
-              "content": ${{ env.escaped_json }}}	
+              "content": ${{ env.escaped_json }}
+						}	
 					
 					
