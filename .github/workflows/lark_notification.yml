@@ -132,7 +132,7 @@ jobs:
                   },
                   {
                     "tag": "md",
-                    "text": "**Need Approval From:** @${{ inputs.TEAM }} <at user_id='all'></at>"
+                    "text": "**Need Approval From:** @${{ inputs.TEAM }} <at user_id=\\"all\\"></at>"
                   },
                   {
                     "tag": "md",
