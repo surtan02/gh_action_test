@@ -106,7 +106,7 @@ jobs:
             
             if [ "$response" -eq 200 ]; then
               echo $response
-              access_token=$(echo "$response" | jq -r .tenant_access_token)
+              access_token=$(jq -r '.tenant_access_token' response.json)
               echo "tenant_access_token=${access_token}" >> $GITHUB_OUTPUT
             else
               error_message=$(jq -r '.errors' response.json)
