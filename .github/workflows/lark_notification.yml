@@ -107,7 +107,7 @@ jobs:
             
             echo $response
             # access_token=$(echo "$response" | jq -r .tenant_access_token)
-            echo "tenant_access_token="t-g206cc1vYGJSGALUMKWELG5BNBJ7NAM6YYKA7JSH" >> $GITHUB_OUTPUT
+            echo "tenant_access_token=t-g206cc1vYGJSGALUMKWELG5BNBJ7NAM6YYKA7JSH" >> $GITHUB_OUTPUT
 
       - name: deployment_message
         if: ${{ inputs.NEED_APPROVAL == 'false' }}
