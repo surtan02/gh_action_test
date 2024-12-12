@@ -83,6 +83,7 @@ jobs:
                   {
                     "tag": "md",
                     "text": "**Status:** ${{ job.status == 'success' && '<text_tag color=\\"red\\">Tag text</text_tag> Success ✅' || 'Failed ❌' }}"
+                    "style": ["bold", "underline", "red"]
                   }
                 ]
               ]
@@ -109,7 +110,7 @@ jobs:
               access_token=$(jq -r '.tenant_access_token' response.json)
               echo "tenant_access_token=${access_token}" >> $GITHUB_OUTPUT
             else
-              error_message=$(jq -r '.errors' response.json)
+              error_message=$(jq -r '.msg' response.json)
               echo "Failed to retrieve Lark tenant_access_token, error message: $error_message"
               exit 1
             fi
@@ -129,7 +130,7 @@ jobs:
             }	')
             
             if [ "$response" -ne 200 ]; then
-              error_message=$(jq -r '.errors' response.json)
+              error_message=$(jq -r '.msg' response.json)
               echo "Failed to send notification, error message: $error_message"
               exit 1
             fi
@@ -183,7 +184,7 @@ jobs:
             }')
             
             if [ "$response" -ne 200 ]; then
-              error_message=$(jq -r '.errors' response.json)
+              error_message=$(jq -r '.msg' response.json)
               echo "Failed to send notification, error message: $error_message"
               exit 1
             fi
