@@ -47,7 +47,7 @@ jobs:
         if: ${{ inputs.NEED_APPROVAL == 'false' }}
         id: deployment_message_parser
         run: |
-          json_string='{
+          message='{
             "en_us": {
               "title": "${{ inputs.LARK_TITLE }} ${{ github.repository }}",
               "content": [
@@ -89,24 +89,22 @@ jobs:
             }
           }'
           
-          one_line_json=$(echo "$json_string" | tr -d '\n' | sed 's/"/\\"/g')
+          one_line_json=$(echo "$message" | tr -d '\n' | sed 's/"/\\"/g')
           echo "Escaped One-Line JSON: $one_line_json"
           echo "escaped_json=$one_line_json" >> $GITHUB_OUTPUT	
 
       - name: get_tenant_ids
         id: get_tenant_id
-        uses: fjogeleit/http-request-action@v1
-        continue-on-error: true
-        with:
-          url: 'https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal'
-          method: 'POST'
-          customHeaders: '{"Content-Type": "application/json"}'
-          data: |
-            {
+        run:  |
+            response=$(curl -s -o response.json -w "%{http_code}" \
+            -X POST \
+            -H "Content-Type: application/json" \
+            "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal" \
+            -d '{
               "app_id": "${{ secrets.LARK_APP_ID }}",
               "app_secret": "${{ secrets.LARK_APP_SECRET }}"
-            }
-  
+            }')
+
       - name: deployment_message
         if: ${{ inputs.NEED_APPROVAL == 'false' }}
         uses: fjogeleit/http-request-action@v1
@@ -127,7 +125,7 @@ jobs:
         if: ${{ inputs.NEED_APPROVAL == 'true' }}
         id: approval_message_parser
         run: |
-          json_string='{
+          message='{
             "en_us": {
               "title": "${{ inputs.LARK_TITLE }} ${{ github.repository }}",
               "content": [
@@ -142,18 +140,18 @@ jobs:
                   },
                   {
                     "tag": "md",
-                    "text": "**Github Release:** ${{ github.server_url }}/${{ github.repository }}/releases/tag/v${{ inputs.VERSION_NAME }}"
+                    "text": "**Github Release:** ${{ github.server_url }}/${{ github.repository }}/releases/tag/v${{ inputs.VERSION_NAME }} "
                   },
                   {
                     "tag": "md",
-                    "text": "**Github Action**: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                    "text": "**Github Action**: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} "
                   }
                 ]
               ]
             }
           }'
           
-          one_line_json=$(echo "$json_string" | tr -d '\n' | sed 's/"/\\"/g')
+          one_line_json=$(echo "$message" | tr -d '\n' | sed 's/"/\\"/g')
           echo "Escaped One-Line JSON: $one_line_json"
           echo "escaped_json=$one_line_json" >> $GITHUB_OUTPUT	
 
