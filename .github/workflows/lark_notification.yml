@@ -120,7 +120,7 @@ jobs:
         run:  |
             response=$(curl -s -o response.json -w "%{http_code}" -X POST \
             -H "Content-Type: application/json" \
-            -H "Authorization: Bearer ${{steps.get_tenant_access_token.outputs.tenant_access_token}}"
+            -H "Authorization: Bearer ${{steps.get_tenant_access_token.outputs.tenant_access_token}}" \
             "https://open.larksuite.com/open-apis/im/v1/messages?receive_id_type=chat_id" \
             -d '{
               "receive_id": "${{ inputs.CHANNEL_ID }}",
@@ -174,7 +174,7 @@ jobs:
         run:  |
             response=$(curl -s -o response.json -w "%{http_code}" -X POST \
             -H "Content-Type: application/json" \
-            -H "Authorization: Bearer ${{steps.get_tenant_access_token.outputs.tenant_access_token}}"
+            -H "Authorization: Bearer ${{steps.get_tenant_access_token.outputs.tenant_access_token}}" \
             "https://open.larksuite.com/open-apis/im/v1/messages?receive_id_type=chat_id" \
             -d '{
               "receive_id": "${{ inputs.CHANNEL_ID }}",
