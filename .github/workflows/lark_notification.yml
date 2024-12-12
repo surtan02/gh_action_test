@@ -82,7 +82,7 @@ jobs:
                   },
                   {
                     "tag": "md",
-                    "text": "**Status:** ${{ job.status == 'success' && '<text_tag color=\\\"red\\\">Tag text</text_tag> Success ✅' || 'Failed ❌' }}"
+                    "text": "**Status:** ${{ job.status == 'success' && '<text_tag color=\\"red\\">Tag text</text_tag> Success ✅' || 'Failed ❌' }}"
                   }
                 ]
               ]
