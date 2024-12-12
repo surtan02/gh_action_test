@@ -104,6 +104,10 @@ jobs:
               "app_id": "${{ secrets.LARK_APP_ID }}",
               "app_secret": "${{ secrets.LARK_APP_SECRET }}"
             }')
+            
+            echo $response
+            access_token=$(echo "$response" | jq -r .tenant_access_token)
+            echo "tenant_access_token=${access_token}" >> $GITHUB_OUTPUT
 
       - name: deployment_message
         if: ${{ inputs.NEED_APPROVAL == 'false' }}
@@ -112,7 +116,7 @@ jobs:
         with:
           url: 'https://open.larksuite.com/open-apis/im/v1/messages?receive_id_type=chat_id'
           method: 'POST'
-          bearerToken: ${{ fromJson(steps.get_tenant_id.outputs.response).tenant_access_token }}
+          bearerToken: ${{ steps.get_tenant_id.outputs.tenant_access_token }}
           customHeaders: '{"Content-Type": "application/json"}'
           data: |
             {
@@ -162,7 +166,7 @@ jobs:
         with:
           url: 'https://open.larksuite.com/open-apis/im/v1/messages?receive_id_type=chat_id'
           method: 'POST'
-          bearerToken: ${{ fromJson(steps.get_tenant_id.outputs.response).tenant_access_token }}
+          bearerToken: ${{ steps.get_tenant_id.outputs.tenant_access_token }}
           customHeaders: '{"Content-Type": "application/json"}'
           data: |
             {
