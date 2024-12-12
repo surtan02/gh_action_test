@@ -82,7 +82,7 @@ jobs:
                   },
                   {
                     "tag": "md",
-                    "text": "**Status:** ${{ job.status == 'success' && 'Success ✅' || 'Failed ❌' }}"
+                    "text": "**Status:** ${{ job.status == 'success' && '<text_tag color=\\\"red\\\">Tag text</text_tag> Success ✅' || 'Failed ❌' }}"
                   }
                 ]
               ]
@@ -130,7 +130,7 @@ jobs:
             
             if [ "$response" -ne 200 ]; then
               error_message=$(jq -r '.errors' response.json)
-              echo "Failed to retrieve Lark tenant_access_token, error message: $error_message"
+              echo "Failed to send notification, error message: $error_message"
               exit 1
             fi
 
@@ -184,6 +184,6 @@ jobs:
             
             if [ "$response" -ne 200 ]; then
               error_message=$(jq -r '.errors' response.json)
-              echo "Failed to retrieve Lark tenant_access_token, error message: $error_message"
+              echo "Failed to send notification, error message: $error_message"
               exit 1
             fi
