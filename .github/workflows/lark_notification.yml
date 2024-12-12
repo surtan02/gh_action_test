@@ -96,8 +96,7 @@ jobs:
       - name: get_tenant_ids
         id: get_tenant_id
         run:  |
-            response=$(curl -s -o response.json -w "%{http_code}" \
-            -X POST \
+            response=$(curl -X POST \
             -H "Content-Type: application/json" \
             "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal" \
             -d '{
@@ -106,8 +105,8 @@ jobs:
             }')
             
             echo $response
-            # access_token=$(echo "$response" | jq -r .tenant_access_token)
-            echo "tenant_access_token=t-g206cc1vYGJSGALUMKWELG5BNBJ7NAM6YYKA7JSH" >> $GITHUB_OUTPUT
+            access_token=$(echo "$response" | jq -r .tenant_access_token)
+            echo "tenant_access_token=${access_token}" >> $GITHUB_OUTPUT
 
       - name: deployment_message
         if: ${{ inputs.NEED_APPROVAL == 'false' }}
