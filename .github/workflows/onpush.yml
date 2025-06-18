@@ -20,7 +20,6 @@ jobs:
       - name: Mock Deploy to Staging
         run: |
           echo "🟡 Deploying to STAGING..."
-          sleep 5
           echo "✅ Mock staging deploy complete!"
 
   deploy-production:
@@ -36,8 +35,5 @@ jobs:
 
       - name: Mock Deploy to Production
         run: |
-          echo "🟠 Awaiting production deployment approval..."
-          sleep 5
           echo "🚀 Deploying to PRODUCTION..."
-          sleep 5
           echo "✅ Mock production deploy complete!"
