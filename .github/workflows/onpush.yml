@@ -1,11 +1,41 @@
-name: Lark Notification
+name: Mock Deploy
 
-on: [push]
-
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  lark_notify:
-    uses: surtan02/gh_action_test/.github/workflows/lark_notification.yml@main
-    with:
-        NEED_APPROVAL: "false"
-    secrets: inherit
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Mock Deploy to Staging
+        run: |
+          echo "🟡 Deploying to STAGING..."
+          sleep 5
+          echo "✅ Mock staging deploy complete!"
+
+  deploy-production:
+    name: Deploy to Production
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://example.com/production  # optional: link to real dashboard or mock
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Mock Deploy to Production
+        run: |
+          echo "🟠 Awaiting production deployment approval..."
+          sleep 5
+          echo "🚀 Deploying to PRODUCTION..."
+          sleep 5
+          echo "✅ Mock production deploy complete!"
