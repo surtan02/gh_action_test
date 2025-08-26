@@ -27,7 +27,6 @@ jobs:
 
   get-prod-deploy:
     name: 📋 Collect PRs for Production
-    if: github.event.pull_request.merged == true
     needs: deploy-staging
     runs-on: ubuntu-latest
     permissions:
