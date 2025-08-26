@@ -5,7 +5,7 @@ on:
     types:
       - closed
     branches:
-      - main
+      - main  # Deploy production only after PR is closed
 
 jobs:
   deploy-staging:
@@ -24,11 +24,11 @@ jobs:
 
   deploy-production:
     name: Deploy to Production
+#    if: github.event.pull_request.merged == true  # Only if PR was merged
     needs: deploy-staging
     runs-on: ubuntu-latest
     environment:
       name: production
-      url: https://example.com/production  # optional: link to real dashboard or mock
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
