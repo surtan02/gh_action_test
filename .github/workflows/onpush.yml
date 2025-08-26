@@ -25,17 +25,15 @@ jobs:
           echo "🟡 Deploying to STAGING..."
           echo "✅ Staging deploy complete!"
 
-  deploy-production:
-    name: 🚀 Deploy to Production
+  get-prod-deploy:
+    name: 📋 Collect PRs for Production
+    if: github.event.pull_request.merged == true
     needs: deploy-staging
     runs-on: ubuntu-latest
-    environment:
-      name: production
-      url: https://example.com/production
     permissions:
       contents: read
       actions: write
-      pull-requests: write   # needed to comment on PRs
+      pull-requests: write
 
     steps:
       - name: Checkout code
@@ -56,14 +54,14 @@ jobs:
           script: |
             const baseSha = "${{ steps.lastsha.outputs.sha }}" || "HEAD~10";
             const headSha = process.env.GITHUB_SHA;
-
+            
             const { data: compare } = await github.rest.repos.compareCommits({
               owner: context.repo.owner,
               repo: context.repo.repo,
               base: baseSha,
               head: headSha,
             });
-
+            
             const prs = new Set();
             for (const commit of compare.commits) {
               const { data: associated } =
@@ -76,7 +74,7 @@ jobs:
                 if (pr.merged_at) prs.add(`#${pr.number} - ${pr.title}`);
               }
             }
-
+            
             const result = [...prs].join("\n") || "No new PRs found";
             core.setOutput("prs", result);
 
@@ -95,21 +93,55 @@ jobs:
               });
             }
 
-      # 🚦 At this point, GitHub will PAUSE until the production environment is approved
+  deploy-production:
+    name: 🚀 Deploy to Production
+    if: github.event.pull_request.merged == true
+    needs: [deploy-staging, get-prod-deploy]
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+    permissions:
+      contents: read
+      actions: write
+      pull-requests: write
 
+    steps:
       - name: Mock Deploy to Production
         run: |
           echo "🚀 Deploying to PRODUCTION..."
           echo "✅ Production deploy complete!"
 
-      - name: Update LAST_PROD_SHA environment variable
+      - name: Create or Update LAST_PROD_SHA environment variable
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            await github.rest.actions.updateEnvironmentVariable({
-              repository_id: context.repo.id,
-              environment_name: "production",
-              name: "LAST_PROD_SHA",
-              value: process.env.GITHUB_SHA,
-            });
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const envName = "production";
+            const varName = "LAST_PROD_SHA";
+            const newValue = process.env.GITHUB_SHA;
+
+            try {
+              await github.request("PATCH /repos/{owner}/{repo}/environments/{environment_name}/variables/{name}", {
+                owner,
+                repo,
+                environment_name: envName,
+                name: varName,
+                value: newValue,
+              });
+              core.info(`Updated ${varName} to ${newValue}`);
+            } catch (err) {
+              if (err.status === 404) {
+                await github.request("POST /repos/{owner}/{repo}/environments/{environment_name}/variables", {
+                  owner,
+                  repo,
+                  environment_name: envName,
+                  name: varName,
+                  value: newValue,
+                });
+                core.info(`Created ${varName} = ${newValue}`);
+              } else {
+                throw err;
+              }
+            }
