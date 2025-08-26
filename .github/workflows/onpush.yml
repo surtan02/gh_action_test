@@ -94,7 +94,6 @@ jobs:
 
   deploy-production:
     name: 🚀 Deploy to Production
-    if: github.event.pull_request.merged == true
     needs: [deploy-staging, get-prod-deploy]
     runs-on: ubuntu-latest
     environment:
