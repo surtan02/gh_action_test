@@ -11,8 +11,18 @@ on:
       - main
 
 jobs:
+  marking:
+    name: marking
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo The PR was merged
+
+
   deploy-staging:
     name: 🟡 Deploy to Staging
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     environment:
       name: staging
@@ -94,6 +104,7 @@ jobs:
 
   deploy-production:
     name: 🚀 Deploy to Production
+    if: github.event_name == 'push'
     needs: [deploy-staging, get-prod-deploy]
     runs-on: ubuntu-latest
     environment:
