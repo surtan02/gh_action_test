@@ -15,6 +15,8 @@ jobs:
     name: marking
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    environment:
+      name: testing
     steps:
       - run: |
           echo The PR was merged
