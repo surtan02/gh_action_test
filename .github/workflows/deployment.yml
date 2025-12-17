@@ -1,0 +1,61 @@
+# For split deployment
+name: SplitDeployment
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      common: ${{ steps.filter.outputs.common }}
+      dir-one: ${{ steps.filter.outputs.dir-one }}
+      dir-two: ${{ steps.filter.outputs.dir-two }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            common:
+              - 'common/**'
+            dir-one:
+              - 'dir-one/**'
+            dir-two:
+              - 'dir-two/**'
+
+  common-deployment:
+    needs: changes
+    if: ${{ needs.changes.outputs.common == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy
+        run: |
+          echo "Deploy both functions"
+
+  # JOB to build and test frontend code
+  dir-one-deployment:
+    needs: changes
+    if: ${{ needs.changes.outputs.dir-one == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy
+        run: |
+          echo "Deploy dir-one function only"
+
+  dir-two-deployment:
+    needs: changes
+    if: ${{ needs.changes.outputs.dir-two == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy
+        run: |
+          echo "Deploy dir-two function only"
