@@ -1,0 +1,35 @@
+name: Create Release Branch
+run-name: 'Create branch ${{ inputs.branch_name }}'
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch_name:
+        description: 'Name of release branch to be created. It should match "release/**/*" pattern. For example, "release/beicptar/30-07-2025", or "release/v1.2.0"'
+        required: true
+        type: string
+      commit_sha:
+        description: 'Commit SHA from a protected branch (full or partial, e.g., "ad123fb4" or "ad123fb48jds2..."). Leave empty to use latest from selected branch.'
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  create_branch:
+    name: Create Release Branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create new branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH_NAME="${{ inputs.BRANCH_NAME }}"
+          COMMIT_SHA="${VALIDATED_COMMIT_SHA}"
+          
+          echo "Creating branch '$BRANCH_NAME' from commit: $COMMIT_SHA"
+          
+          # Create the new branch using the GitHub API
+          git checkout -b "$BRANCH_NAME" "$COMMIT_SHA"
+          git push origin "$BRANCH_NAME"
+          
+          echo "Branch ${BRANCH_NAME} created successfully from commit ${COMMIT_SHA}"
