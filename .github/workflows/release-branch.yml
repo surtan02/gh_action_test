@@ -24,12 +24,11 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           BRANCH_NAME="${{ inputs.BRANCH_NAME }}"
-          COMMIT_SHA="${VALIDATED_COMMIT_SHA}"
           
-          echo "Creating branch '$BRANCH_NAME' from commit: $COMMIT_SHA"
+          echo "Creating branch '$BRANCH_NAME'"
           
           # Create the new branch using the GitHub API
-          git checkout -b "$BRANCH_NAME" "$COMMIT_SHA"
+          git checkout -b "$BRANCH_NAME" 
           git push origin "$BRANCH_NAME"
           
-          echo "Branch ${BRANCH_NAME} created successfully from commit ${COMMIT_SHA}"
+          echo "Branch ${BRANCH_NAME} created successfully"
