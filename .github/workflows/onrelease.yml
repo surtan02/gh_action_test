@@ -1,3 +1,5 @@
+name: Release Flow
+
 on:
   release:
     types: [prereleased, released]
