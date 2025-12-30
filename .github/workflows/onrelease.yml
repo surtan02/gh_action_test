@@ -7,7 +7,7 @@ on:
 jobs:
   trigger_workflow:
     name: Trigger Release Branch
-    uses: surtan02/gh_action_test/.github/workflows/release-branch.yml@latest
+    uses: surtan02/gh_action_test/.github/workflows/release-branch.yml@main
     with:
       branch_name: ${{ inputs.branch_name }}
     secrets: inherit
