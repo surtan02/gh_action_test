@@ -13,6 +13,16 @@ on:
         required: false
         type: string
         default: ''
+  workflow_call:
+    inputs:
+      branch_name:
+        required: true
+        type: string
+    commit_sha:
+      description: 'Commit SHA from a protected branch (full or partial, e.g., "ad123fb4" or "ad123fb48jds2..."). Leave empty to use latest from selected branch.'
+      required: false
+      type: string
+      default: ''
 
 jobs:
   create_branch:
